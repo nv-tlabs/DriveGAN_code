@@ -99,10 +99,10 @@ To sample a new scene, simply refresh the webpage.
 # License
 Thie codebase and trained models are distributed under [Nvidia Source Code License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE) and the dataset is distributed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
 
-Code for VAE-GAN is adapted from https://github.com/rosinality/stylegan2-pytorch ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-ROSINALITY).
+Code for VAE-GAN is adapted from https://github.com/rosinality/stylegan2-pytorch ([License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-ROSINALITY)).
 
-Code for Lpips is imported from https://github.com/richzhang/PerceptualSimilarity ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-LPIPS).
+Code for Lpips is imported from https://github.com/richzhang/PerceptualSimilarity ([License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-LPIPS)).
 
-StyleGAN custom ops are imported from https://github.com/NVlabs/stylegan2 ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-NVIDIA).
+StyleGAN custom ops are imported from https://github.com/NVlabs/stylegan2 ([License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-NVIDIA)).
 
-Interactive UI code uses http://www.semantic-ui.com/ ([License])(https://github.com/Semantic-Org/Semantic-UI/blob/master/LICENSE.md).
+Interactive UI code uses http://www.semantic-ui.com/ ([License](https://github.com/Semantic-Org/Semantic-UI/blob/master/LICENSE.md)).
