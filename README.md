@@ -40,13 +40,13 @@ pip install -r requirements.txt
 
 ## Data
 We provide a dataset derived from Carla Simulator (https://carla.org/, https://github.com/carla-simulator/carla).
-This dataset is distributed under Creative Commons Attribution-NonCommercial 4.0 International Public LicenseCC BY-NC 4.0(https://creativecommons.org/licenses/by-nc/4.0/legalcode)
+This dataset is distributed under [Creative Commons Attribution-NonCommercial 4.0 International Public LicenseCC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
 
 All data are stored in the following link:
 https://drive.google.com/drive/folders/1fGM6KVzBL9M-6r7058fqyVnNcHVnYoJ3?usp=sharing
 
-## Training
-# Stage 1 (VAE-GAN)
+# Training
+## Stage 1 (VAE-GAN)
 If you want to skip stage 1 training, go to the Stage 2 (Dynamics Engine) section.
 For stage 1 training, download  {0-5}.tar.gz from the [link](https://drive.google.com/drive/folders/1fGM6KVzBL9M-6r7058fqyVnNcHVnYoJ3?usp=sharing) and extract. The extracted datasets have names starting with 6405 - change their name to data1 (for 0.tar.gz) to data6 (for 5.tar.gz).
 ```
@@ -68,7 +68,7 @@ When validation loss converges, you can now encode the dataset with the learned 
 ```  
 
 
-# Stage 2 (Dynamics Engine)
+## Stage 2 (Dynamics Engine)
 If you did not do Stage 1 training, download encoded_data.tar.gz and vaegan_iter210000.pt from [link](https://drive.google.com/drive/folders/1fGM6KVzBL9M-6r7058fqyVnNcHVnYoJ3?usp=sharing), and extract.
 ```
 cd DriveGAN_code
@@ -97,12 +97,12 @@ There are also additional buttons for changing contents.
 To sample a new scene, simply refresh the webpage.
 
 # License
-Thie codebase and trained models are distributed under Nvidia Source Code License and the dataset is distributed under CC BY-NC 4.0.
+Thie codebase and trained models are distributed under [Nvidia Source Code License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE) and the dataset is distributed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
 
-Code for VAE-GAN is adapted from https://github.com/rosinality/stylegan2-pytorch (License).
+Code for VAE-GAN is adapted from https://github.com/rosinality/stylegan2-pytorch ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-ROSINALITY).
 
-Code for Lpips is imported from https://github.com/richzhang/PerceptualSimilarity (License).
+Code for Lpips is imported from https://github.com/richzhang/PerceptualSimilarity ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-LPIPS).
 
-StyleGAN custom ops are imported from https://github.com/NVlabs/stylegan2 (License).
+StyleGAN custom ops are imported from https://github.com/NVlabs/stylegan2 ([License])(https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE-NVIDIA).
 
-Interactive UI code uses http://www.semantic-ui.com/ (License).
+Interactive UI code uses http://www.semantic-ui.com/ ([License])(https://github.com/Semantic-Org/Semantic-UI/blob/master/LICENSE.md).
