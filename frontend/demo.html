@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>DriveGAN Neural Simulator</title>
+
+  <link rel="stylesheet" type="text/css" href="semanticui/semantic.min.css"> <!--MIT-->
+  <style type="text/css">
+    body {
+      background-color: #262526;
+      /* background-color: #e2e1e0; */
+      color: #fff;
+      margin: 0;
+      font-family: Helvetica,Arial,Sans-Serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .rb-box {
+      /* background: #fff; */
+      background: rgb(100, 100, 100);
+      border-radius: 2px;
+      text-align: center;
+      margin: 0 0 20px 50px;
+      padding: 1em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    }
+    .rb-box .button-group {
+      display:flex;
+      flex-wrap: wrap;
+      width: auto;
+      /* padding-left: 12px; */
+    }
+    .rb-box:hover {
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    }
+    .rb-box h2 {
+      /* color: #77b900; */
+      color: #eee;
+    }
+    .rb-box .button {
+      width: 31%;
+      margin: 4px;
+      font-size: 1.2rem;
+    }
+    .rb-box-2 {
+      background: rgb(100, 100, 100);
+      border-radius: 2px;
+      width: 60%;
+      max-width: 500px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+      /* margin: 20px auto; */
+      padding: 1em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    }
+    .rb-box-2:hover {
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    }
+    .rb-box-2 h2 {
+      /* color: #77b900; */
+      color: #eee;
+      margin: 0;
+    }
+
+    .page {
+      display: grid;
+      height: 100%;
+      width: 100%;
+      grid-template-rows: 60px calc(100vh - 60px);
+    }
+    nav {
+      background-color: #79BC54;
+      /* background-color: #9966ff; */
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 10px;
+      margin-left: 0px;
+      font-size:30px;
+      display: flex;
+      justify-content: center;
+    }
+    .main {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      padding-top: 20px;
+    }
+    .view {
+      margin-left: 20px;
+      display: grid;
+      grid-template-rows: 50% 25%;
+    }
+    .view-control {
+      width: 80%;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 30% 30% 40%;
+      align-items: center;
+      justify-items: center;
+    }
+    div.clickEffect{
+        position:fixed;
+        box-sizing:border-box;
+        border-style:solid;
+        border-color:#000000;
+        border-radius:50%;
+        animation:clickEffect 0.4s ease-out;
+        z-index:99999;
+    }
+    @keyframes clickEffect{
+        0%{
+            opacity:1;
+            width:0.5em; height:0.5em;
+            margin:-0.25em;
+            border-width:0.5rem;
+        }
+        100%{
+            opacity:0.2;
+            width:15em; height:15em;
+            margin:-7.5em;
+            border-width:0.03rem;
+        }
+    }
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #154360;
+        border-color: #154360;
+    }
+    .btn-success:hover {
+        color: #fff;
+        background-color: #0B5345;
+        border-color: #0B5345;
+    }
+    .btn-secondary:hover {
+        color: #fff;
+        background-color: #2E4053;
+        border-color: #2E4053;
+    }
+    .btn-danger:hover {
+        color: #fff;
+        background-color: #641E16;
+        border-color: #641E16;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="page">
+        <nav>
+            <span style="color: #eee">DriveGAN Neural Simulator</span>
+        </nav>
+        <div class="main" style="margin-left: 140px">
+          <div>
+            <div id="randomBody" class="rb-box">
+              <h2>Randomize</h2>
+              <div class="button-group">
+                <button id="change-hscene-btn" class="blue ui button compact">Theme</button>
+                <button id="change-scene-btn" class="red ui button compact">Style</button>
+                <button id="change-content-btn" class="green ui button compact">Layout</button>
+              </div>
+          </div>
+            <div id="themeBody" class="rb-box">
+                <h2>Choose Theme</h2>
+                <div class="button-group">
+                </div>
+
+            </div>
+            <div id="partBody" class="rb-box">
+                <h2>Choose Content</h2>
+                <div class="button-group">
+                </div>
+            </div>
+
+          </div>
+          <div class="view">
+              <div id="view-image">
+                  <img id="img-0" height="0" width="0"></img>
+              </div>
+
+              <div id="control" class="rb-box-2" style='margin-top: 70px'>
+                <h2>Driving Controls</h2>
+                <div class="view-control">
+                  <img id="action_img" height="100" width="100" src='wheel2.png'></img>
+                  <div>
+
+                    <button id="resume-btn" class="ui green compact icon button"><i class="play icon"></i></button>
+                    <button id="stop-btn" class="ui green compact icon button"><i class="pause icon"></i></button>
+                  </div>
+                  <div>
+
+                      <div id="gauge" style="width: 150px; height: 100px;"></div>
+                  </div>
+
+                </div>
+              </div>
+          </div>
+
+        </div>
+        <br/><br/><br/>
+        <div class="form-group row" style="margin-top:10px">
+                <button id="start-btn" type="button" class="btn btn-sm btn-warning"><i class="fas fa-play"></i>Run</button>
+                <input type="text" class="form-control" id="filename" aria-describedby="emailHelp" placeholder="Filename"></input>
+                <button id="save-btn" type="button" class="btn btn-sm btn-warning"><i class="fas fa-save"></i> Save</button>
+                <button id="load-btn" type="button" class="btn btn-sm btn-warning"><i class="fas fa-upload"></i> Load</button>
+        </div>
+    </div>
+
+
+  <!-- extra js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script> <!--MIT-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.3.1/justgage.min.js"></script> <!--MIT-->
+
+  <!-- extra js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> <!--MIT-->
+  <script src="semanticui/semantic.min.js"></script> <!--MIT-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!--MIT-->
+
+  <script>
+    var curKey = 'stop';
+    var prevTime = new Date();
+
+    var curSpeed = 0.0;
+    var curYaw = 0.0;
+    var yawLimit = 5.0;
+    var speedLimit = 5.0;
+    var has_started = false;
+    var button_loaded = false;
+    var g = new JustGage({
+        id: "gauge",
+        value: 0,
+        min: 0,
+        max: 213,
+        title: "Speed",
+        label: "Speed",
+        valueFontColor: "#eee",
+        minLabelFontColor: "#eee",
+        maxLabelFontColor: "#eee",
+        labelFontColor: "#eee",
+        valueMinFontSize: 25,
+        labelMinFontSize: 20,
+        minLabelMinFontSize: 13,
+        maxLabelMinFontSize	: 13,
+      });
+      var gt_g = new JustGage({
+          id: "gt-gauge",
+          value: 0,
+          min: 0,
+          max: 213,
+          title: "Speed",
+          label: "Speed",
+          valueFontColor: "#eee",
+          minLabelFontColor: "#eee",
+          maxLabelFontColor: "#eee",
+          labelFontColor: "#eee",
+          valueMinFontSize: 25,
+          labelMinFontSize: 20,
+          minLabelMinFontSize: 13,
+          maxLabelMinFontSize	: 13,
+        });
+    // automatically adujust size of image
+    document.addEventListener("DOMContentLoaded", function() {
+      let view = document.getElementById("view-image");
+      let img = document.getElementById("img-0");
+      let size = Math.min(view.offsetHeight, view.offsetWidth);
+
+      let fixed_h = 0;
+      let fixed_w = 0;
+
+      if($("#gt-img").length != 0) {
+          fixed_h = 333;
+          fixed_w = 555;
+      }
+      if (fixed_h == 0) {
+          if (view.offsetWidth * 2. / 3. <= view.offsetHeight) {
+            img.width = view.offsetWidth;
+            img.height = view.offsetWidth * 2. / 3.;
+          } else {
+            img.height = view.offsetHeight;
+            img.width = view.offsetHeight * 3. / 2.;
+          }
+          img.height = img.height * 1.1;
+          img.width = img.width * 1.1;
+          fixed_h = img.height;
+          fixed_w = img.width;
+      } else {
+          img.height = fixed_h;
+          img.width = fixed_w;
+      }
+      document.getElementById("start-btn").click();
+      document.getElementById("resume-btn").style.display = "none";
+      document.getElementById("filename").value = "carla_assets";
+
+      let ctrl = document.getElementById("control");
+      ctrl.style.marginLeft = `${(img.width-ctrl.offsetWidth)/2}px`;
+
+      if($("#gt-img").length != 0) {
+          let gt_img = document.getElementById("gt-img");
+
+          gt_img.height = fixed_h;
+          gt_img.width = fixed_w;
+      }
+    });
+
+    g.refresh(Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30));
+
+    function load_init_screen(){
+        // reset
+        var filename = $("#seqfilename").val();
+        var isDirectory = '0'
+        var loadpath = "/home/seung/Projects/simulator_v2/simulator/init_screen/" +filename
+
+        cmd = {'cmd': 'load_screen', 'filename': loadpath, 'web_id': web_id}
+
+        axios.post('', cmd)
+          .then(function (res) {
+              web_id = res.data['web_id'];
+            console.log('loaded');
+            console.log(res);
+            let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['img'])}`;
+            if ($("#gt-img").length != 0){
+                ele = document.getElementById(`gt-img`);
+                ele.src = img;
+            }
+          })
+          .catch(function (err) {
+            console.log('loadBtn - something went wrong...');
+            console.log(err);
+          })
+    }
+
+    // add img elements
+    function change_from_list(event){
+        let cmd = {'cmd': 'change_from_list', 'kind': event.data.kind, 'name': event.data.name, 'web_id': web_id, 'h': event.data.h, 'w': event.data.w}
+        stopBtn.click();
+        axios.post('', cmd)
+          .then(function (res) {
+            console.log('change_from_list');
+            let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['new_screen'])}`;
+            ele = document.getElementById(`img-0`);
+            ele.src = img;
+          })
+          .catch(function (err) {
+            console.log('change_from_list - something went wrong...');
+            console.log(err);
+          })
+    }
+    function clickEffect(e){
+        var d=document.createElement("div");
+        d.className="clickEffect";
+        d.style.top=e.clientY+"px";d.style.left=e.clientX+"px";
+        document.body.appendChild(d);
+        d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+    }
+
+    $("#img-0").on("click", function(event) {
+        clickEffect(event);
+        var parentOffset = $(this).parent().offset();
+        var x = event.pageX - parentOffset.left;
+        var y = event.pageY - parentOffset.top;
+        console.log("x:", x, "y:", y);
+        cmd = {'cmd': 'change_grid', 'web_id': web_id, 'x': x/this.width, 'y': y/this.height}
+        axios.post('', cmd)
+        .then(function (res) {
+          web_id = res.data['web_id'];
+
+          let imgs = res.data['imgs'];
+          for (i = 0; i < imgs.length; i++) {
+            let img = `data:image/jpeg;base64,${encodeURIComponent(imgs[i])}`;
+            ele = document.getElementById(`img-${i}`);
+            ele.src = img;
+          }
+        })
+        .catch(function (err) {
+          console.log('something went wrong...');
+          console.log(err);
+        })
+    });
+
+
+
+    // step
+    function repeat_step () {
+      let cmd = {'cmd': {'speed': curSpeed, 'yaw': curYaw}, 'web_id': web_id}
+      axios.post('', cmd)
+      .then(function (res) {
+        if (res.data['imgs'] || res.data['dir_img']) {
+          web_id = res.data['web_id'];
+
+          let imgs = res.data['imgs'];
+          console.log(imgs)
+
+          if ("dir_img" in res.data) {
+              let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['dir_img'])}`;
+              ele = document.getElementById(`img-0`);
+              ele.src = img;
+              // optimized actions
+              curSpeed = parseFloat(res.data['speed']);
+              curYaw = -parseFloat(res.data['yaw']);
+              ele = document.getElementById("action_img");
+              curSpeed = Math.min(curSpeed, speedLimit)
+              curYaw = Math.min(curYaw, yawLimit)
+
+              if (res.data['kind'] == 'pilotnet'){
+                  curYaw = 20 * curYaw
+              }else if (res.data['kind'] == 'carla'){
+                  curYaw = 30 * curYaw
+              }else if (res.data['kind'] == 'gibson'){
+                  curYaw = 45 * curYaw
+              }
+              curSpeed = Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30)
+              g.refresh(curSpeed);
+              ele.setAttribute('style','transform:rotate('+ (curYaw).toString() +'deg);');
+
+          } else {
+              if ("gt_img" in res.data && $("#gt-img").length != 0) {
+                  let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['gt_img'])}`;
+                  ele = document.getElementById(`gt-img`);
+                  ele.src = img;
+                  // optimized actions
+                  if ('optimized_speed' in res.data) {
+                      curSpeed = parseFloat(res.data['optimized_speed']);
+                      curYaw = -parseFloat(res.data['optimized_yaw']);
+                      ele = document.getElementById("action_img");
+                      curYaw = Math.min(curYaw, yawLimit)
+
+                      curSpeed = Math.min(curSpeed, speedLimit)
+                      ele.setAttribute('style','transform:rotate('+ (45 * curYaw).toString() +'deg);');
+
+                  }
+                  g.refresh(Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30));
+
+                  // gt actions
+                  console.log(res.data)
+                  gt_curSpeed = parseFloat(res.data['gt_speed']);
+                  gt_curYaw = -parseFloat(res.data['gt_yaw']);
+                  ele = document.getElementById("gt-action_img");
+                  gt_curSpeed = Math.min(gt_curSpeed, speedLimit)
+                  gt_g.refresh(Math.ceil((Math.max(-2, gt_curSpeed) + 2.1) * 30));
+                  gt_curYaw = Math.min(gt_curYaw, yawLimit)
+                  ele.setAttribute('style','transform:rotate('+ (45 * gt_curYaw).toString() +'deg);');
+
+              }
+              for (i = 0; i < imgs.length; i++) {
+                let img = `data:image/jpeg;base64,${encodeURIComponent(imgs[i])}`;
+                ele = document.getElementById(`img-${i}`);
+                ele.src = img;
+              }
+          }
+        }
+        if (has_started) {
+          setTimeout(repeat_step, 250);
+          if (!button_loaded) {
+              loadBtn.click();
+              button_loaded = true;
+          }
+        }
+      })
+    }
+
+    // start button
+    var web_id = 'nothing_yet';
+    var ele = document.getElementById("start-btn");
+    ele.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'reset', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          web_id = res.data['web_id'];
+          let imgs = res.data['imgs'];
+          for (i=0; i<imgs.length; i++) {
+            let img = `data:image/jpeg;base64,${encodeURIComponent(imgs[i])}`;
+            ele = document.getElementById(`img-${i}`);
+            ele.src = img;
+          }
+          if (!has_started) {
+            has_started = true;
+            repeat_step(100);
+          }
+        })
+        .catch(function (err) {
+          console.log('something went wrong...');
+          console.log(err);
+        })
+    }
+
+    var hchangeBtn = document.getElementById("change-hscene-btn");
+    hchangeBtn.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'change_hscene', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          console.log('h-scene change');
+          let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['new_screen'])}`;
+          ele = document.getElementById(`img-0`);
+          ele.src = img;
+
+        })
+        .catch(function (err) {
+          console.log('something went wrong...');
+          console.log(err);
+        })
+    }
+
+    var changeBtn = document.getElementById("change-scene-btn");
+    changeBtn.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'change_scene', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+            let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['new_screen'])}`;
+            ele = document.getElementById(`img-0`);
+            ele.src = img;
+
+        })
+        .catch(function (err) {
+          console.log('something went wrong...');
+          console.log(err);
+        })
+    }
+
+    var changeContentBtn = document.getElementById("change-content-btn");
+    changeContentBtn.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'change_content', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          console.log('scene content');
+          let img = `data:image/jpeg;base64,${encodeURIComponent(res.data['new_screen'])}`;
+          ele = document.getElementById(`img-0`);
+          ele.src = img;
+        })
+        .catch(function (err) {
+          console.log('something went wrong...');
+          console.log(err);
+        })
+    }
+
+
+    function toggle_visibility(e) {
+        e.style.display = e.style.display === "none" ? "inline-block" : "none";
+    }
+
+    var stopBtn = document.getElementById("stop-btn");
+    stopBtn.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'stop_recording', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          console.log('stopped');
+          curSpeed = parseFloat(res.data['stop_speed']);
+          curYaw = parseFloat(res.data['stop_yaw']);
+          ele = document.getElementById("action_img");
+          curSpeed = Math.min(curSpeed, speedLimit)
+          g.refresh(Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30));
+          curYaw = Math.min(curYaw, yawLimit)
+          ele.setAttribute('style','transform:rotate('+ (45 * curYaw).toString() +'deg);');
+          toggle_visibility(document.getElementById("stop-btn"));
+          toggle_visibility(document.getElementById("resume-btn"));
+        })
+        .catch(function (err) {
+          console.log('stopBtn - something went wrong...');
+          console.log(err);
+        })
+    }
+
+    var resumeBtn = document.getElementById("resume-btn");
+    resumeBtn.onclick = function (evt) {
+      // reset
+      cmd = {'cmd': 'resume', 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+
+          if (!has_started) {
+            has_started = true;
+             repeat_step(250);
+          }
+          toggle_visibility(document.getElementById("stop-btn"));
+          toggle_visibility(document.getElementById("resume-btn"));
+          console.log('resumed');
+
+        })
+        .catch(function (err) {
+          console.log('resumeBtn - something went wrong...');
+          console.log(err);
+        })
+    }
+
+
+    var saveBtn = document.getElementById("save-btn");
+    saveBtn.onclick = function (evt) {
+      // reset
+      var filename = $("#filename").val();
+      cmd = {'cmd': 'save_frame', 'filename': filename, 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          console.log('saved');
+        })
+        .catch(function (err) {
+          console.log('saveBtn - something went wrong...');
+          console.log(err);
+        })
+    }
+    var loadBtn = document.getElementById("load-btn");
+    loadBtn.onclick = function (evt) {
+      var filename = $("#filename").val();
+      cmd = {'cmd': 'load_npy', 'filename': filename, 'web_id': web_id}
+      axios.post('', cmd)
+        .then(function (res) {
+          console.log('loaded');
+          console.log(res);
+          res.data['theme_names'].forEach(tn => {
+              var newButton = document.createElement("button");  // Create with DOM
+              newButton.innerHTML = tn;
+              newButton.setAttribute('type', "button")
+              newButton.setAttribute('class', "ui blue button compact")
+              newButton.setAttribute('id', "theme_"+tn)
+
+              $("#themeBody > .button-group").append(newButton);
+              $("#theme_"+tn).on( "click", {
+                  kind: "theme",
+                  name: tn
+              }, change_from_list );
+          })
+          res.data['part_names'].forEach((tn, index )=> {
+              var newButton = document.createElement("button");  // Create with DOM
+              newButton.innerHTML = tn;
+              newButton.setAttribute('type', "button")
+              newButton.setAttribute('class', "ui green button compact")
+              newButton.setAttribute('id', "part_"+tn)
+
+              $("#partBody > .button-group").append(newButton);
+              $("#part_"+tn).on( "click", {
+                  kind: "part",
+                  name: tn
+              }, change_from_list );
+          })
+
+
+        })
+        .catch(function (err) {
+          console.log('loadBtn - something went wrong...');
+          console.log(err);
+        })
+    }
+
+
+    function checkKeyPress() {
+        var curTime = new Date();
+        var timeDiff = (curTime.getTime() - prevTime.getTime());
+        if (timeDiff > 100){
+            let cmd = {'cmd': 'stop', 'web_id': web_id}
+            axios.post('', cmd).then(function (res) {
+              web_id = res.data['web_id'];
+              let imgs = res.data['imgs'];
+              for (i=0; i<imgs.length; i++) {
+                let img = `data:image/jpeg;base64,${encodeURIComponent(imgs[i])}`;
+                ele = document.getElementById(`img-${i}`);
+                ele.src = img;
+              }
+
+            }).catch(function (err) {
+              console.log('something went wrong...');
+              console.log(err);
+            })
+        }
+        setTimeout(checkKeyPress, 100)
+    }
+
+    function keyDownHandler(event) {
+        if ((new Date()).getTime() - prevTime.getTime() < 150) {
+            return
+        }
+        ele = document.getElementById("action_img");
+        canvas = document.getElementById('myCanvas');
+
+        prevTime = new Date();
+
+        var factor = 1.5;
+
+        if(event.keyCode == 65) {
+            key_pressed = 'a';
+            curYaw -= 0.1 * factor;
+            curYaw = Math.max(curYaw, -yawLimit)
+
+            ele.setAttribute('style','transform:rotate('+ (45 * curYaw).toString() +'deg);');
+        }
+        else if(event.keyCode == 68) {
+            key_pressed = 'd';
+            curYaw += 0.1 * factor;
+
+            curYaw = Math.min(curYaw, yawLimit)
+            ele.setAttribute('style','transform:rotate('+ (45 * curYaw).toString() +'deg);');
+
+        }
+        else if(event.keyCode == 83) {
+            key_pressed = 's';
+            curSpeed -= 0.1 * factor;
+
+            curSpeed = Math.max(curSpeed, -speedLimit)
+            // canvas.width = Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30)
+            g.refresh(Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30));
+        }
+        else if(event.keyCode == 87) {
+            key_pressed = 'w';
+            if (curSpeed < -2){
+                curSpeed += 0.5;
+            } else if (curSpeed < -1) {
+                curSpeed += 0.2;
+            } else {
+                curSpeed += 0.1;
+            }
+            curSpeed = Math.min(curSpeed, speedLimit)
+            g.refresh(Math.ceil((Math.max(-2, curSpeed) + 2.1) * 30));
+        } else {
+          return
+        }
+    }
+
+    document.addEventListener('keydown', keyDownHandler );
+
+  </script>
+
+</body>
+
+</html>
