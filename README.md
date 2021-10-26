@@ -96,6 +96,9 @@ Now you can navigate to localhost:{port} on your browser (tested on Chrome) and 
 There are also additional buttons for changing contents.
 To sample a new scene, simply refresh the webpage.
 
+Thanks to @virtualramblas, this [link](https://github.com/virtualramblas/DriveGAN_code/tree/master/notebooks) has a notebook for playing it in Colab. 
+
+
 # License
 Thie codebase and trained models are distributed under [Nvidia Source Code License](https://github.com/nv-tlabs/DriveGAN_code/blob/master/LICENSE) and the dataset is distributed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
 
